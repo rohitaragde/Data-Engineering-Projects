@@ -21,7 +21,7 @@ The goal was to convert raw Netflix content metadata into a clean dataset that c
 
 End-to-end data pipeline transforming raw Netflix catalog data into analytics-ready insights using a layered architecture.
 
-<img width="1999" height="846" alt="image" src="https://github.com/user-attachments/assets/928ce99f-3305-4130-b3b9-47d799346cb3" />
+![Pipeline Diagram](netflix_pipeline.png)
 
 
 

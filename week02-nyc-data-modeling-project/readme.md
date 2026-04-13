@@ -30,10 +30,10 @@ This project follows a **medallion-style architecture**:
 
 ## 🏗️ ETL Pipeline Architecture
 
-![Data Model](images/nyc_data_model.png)
+![ETL Pipeline Architecture](images/nyc_etl_pipeline.png)
 
 ## Data Model
-
+![Data Model](images/nyc_data_model.png)
 
 ## ⚙️ Technologies Used
 - Python (Pandas)

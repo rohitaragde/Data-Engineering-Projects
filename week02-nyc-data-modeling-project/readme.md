@@ -28,54 +28,75 @@ This project follows a **medallion-style architecture**:
 - `top_pickup_zones.csv`
 - `avg_trip_distance_per_day.csv`
 
-  ## Star Schema Architecture
+## 🏗️ ETL Pipeline Architecture
 
-```markdown
 ```mermaid
-flowchart TB
+flowchart LR
 
-    FT["fact_trips
-    -------------------------
-    trip_id (PK)
-    pickup_datetime_hour (FK)
-    pickup_location_id (FK)
-    dropoff_location_id (FK)
-    passenger_count
-    trip_distance
-    fare_amount
-    tip_amount
-    total_amount"]
+    subgraph SRC["Source Layer"]
+        S1["yellow_tripdata_2026-01.parquet"]
+        S2["taxi_zone_lookup.csv"]
+    end
 
-    DT["dim_time
-    -------------------------
-    datetime (PK)
-    date
-    year
-    month
-    day
-    hour
-    weekday
-    weekend_flag"]
+    subgraph EXT["Extract"]
+        E1["Load raw trip data"]
+        E2["Load taxi zone lookup"]
+    end
 
-    DLP["dim_location
-    -------------------------
-    location_id (PK)
-    borough
-    zone
-    service_zone
-    <<pickup role>>"]
+    subgraph TRN["Transform"]
+        T1["build_dim_location.py"]
+        T2["build_dim_time.py"]
+        T3["build_fact_trips.py"]
+        T4["business_queries.py"]
+    end
 
-    DLD["dim_location
-    -------------------------
-    location_id (PK)
-    borough
-    zone
-    service_zone
-    <<dropoff role>>"]
+    subgraph STG["Structured Data Layer"]
+        D1["dim_location.csv"]
+        D2["dim_time.csv"]
+        F1["fact_trips.csv"]
+    end
 
-    DT --> FT
-    DLP --> FT
-    DLD --> FT
+    subgraph CUR["Curated Analytics Output"]
+        O1["revenue_by_borough.csv"]
+        O2["revenue_by_weekday.csv"]
+        O3["trips_per_hour.csv"]
+        O4["top_pickup_zones.csv"]
+        O5["avg_trip_distance_per_day.csv"]
+    end
+
+    subgraph BI["Consumption Layer"]
+        B1["Power BI Dashboard"]
+    end
+
+    S1 --> E1
+    S2 --> E2
+
+    E1 --> T2
+    E1 --> T3
+    E2 --> T1
+
+    T1 --> D1
+    T2 --> D2
+    T3 --> F1
+
+    D1 --> T4
+    D2 --> T4
+    F1 --> T4
+
+    T4 --> O1
+    T4 --> O2
+    T4 --> O3
+    T4 --> O4
+    T4 --> O5
+
+    D1 --> B1
+    D2 --> B1
+    F1 --> B1
+    O1 --> B1
+    O2 --> B1
+    O3 --> B1
+    O4 --> B1
+    O5 --> B1
 
 ## ⚙️ Technologies Used
 - Python (Pandas)

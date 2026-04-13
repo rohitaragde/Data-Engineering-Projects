@@ -28,6 +28,55 @@ This project follows a **medallion-style architecture**:
 - `top_pickup_zones.csv`
 - `avg_trip_distance_per_day.csv`
 
+  ## Star Schema Architecture
+
+```markdown
+```mermaid
+flowchart TB
+
+    FT["fact_trips
+    -------------------------
+    trip_id (PK)
+    pickup_datetime_hour (FK)
+    pickup_location_id (FK)
+    dropoff_location_id (FK)
+    passenger_count
+    trip_distance
+    fare_amount
+    tip_amount
+    total_amount"]
+
+    DT["dim_time
+    -------------------------
+    datetime (PK)
+    date
+    year
+    month
+    day
+    hour
+    weekday
+    weekend_flag"]
+
+    DLP["dim_location
+    -------------------------
+    location_id (PK)
+    borough
+    zone
+    service_zone
+    <<pickup role>>"]
+
+    DLD["dim_location
+    -------------------------
+    location_id (PK)
+    borough
+    zone
+    service_zone
+    <<dropoff role>>"]
+
+    DT --> FT
+    DLP --> FT
+    DLD --> FT
+
 ## ⚙️ Technologies Used
 - Python (Pandas)
 - Data Modeling (Fact & Dimension Tables)

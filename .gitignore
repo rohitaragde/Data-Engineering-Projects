@@ -1,0 +1,3 @@
+*.pbix
+*.parquet
+week02-nyc-data-modeling-project/data/processed/fact_trips.csv
